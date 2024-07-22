@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: card_todo_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - g11_card_todo_net
+
+  backend:
+    
+    image: kawin2526/card_backend:0.2
+    container_name: card_todo_backend
+    ports:
+      - "${BACKEND_PORT}:2222"
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - g11_card_todo_net
+    
+
+  frontend:
+    depends_on:
+      - backend
+    image: kawin2526/card_frontend:0.2
+    container_name: card_todo_frontend
+    ports:
+      - "${FRONTEND_PORT}:3333"
+    networks:
+      - g11_card_todo_net
+    environment:
+      - NGINX_PROXY=${NGINX_PROXY}
+      - NGINX_PORT=${FRONTEND_PORT}
+
+volumes:
+  db_data:
+
+networks:
+  g11_card_todo_net:
