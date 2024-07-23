@@ -39,8 +39,9 @@ describe("Frontend Form", () => {
     cy.wait(2000);
 
     // Verify that the todo item was created
-    cy.contains(topic);
-    cy.contains(name);
-    cy.contains(detail);
+    cy.get("[data-cy='card-container']")
+            .first()
+            .should('contain.text', `${topic} of ${name}`)
+            .and('contain.text', detail);
   });
 });

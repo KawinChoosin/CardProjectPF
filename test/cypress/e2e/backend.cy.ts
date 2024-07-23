@@ -1,11 +1,8 @@
-
-describe("Backend Environment", () => {
+describe("Backend", () => {
     it("checks env", () => {
       cy.log(JSON.stringify(Cypress.env()));
     });
-  });
-  
-  describe("Backend CORS", () => {
+
     it("checks CORS policy", () => {
       const url = Cypress.env("BACKEND_URL");
       cy.request({
@@ -15,9 +12,7 @@ describe("Backend Environment", () => {
         expect(res.headers).to.not.have.property("access-control-allow-origin");
       });
     });
-  });
-  
-  describe("Backend Get Todos", () => {
+
     it("fetches all todos", () => {
       const url = Cypress.env("BACKEND_URL");
       cy.request({
@@ -27,9 +22,7 @@ describe("Backend Environment", () => {
         expect(res.body).to.be.an("array");
       });
     });
-  });
-  
-  describe("Backend Create Todo", () => {
+
     it("creates a new todo and checks response fields", () => {
       const url = Cypress.env("BACKEND_URL") as string;
   
@@ -45,14 +38,11 @@ describe("Backend Environment", () => {
         },
       }).then((res) => {
         cy.log(JSON.stringify(res.body));
-        expect(res.body).to.all.keys("id", "topic", "name", "url", "detail", "done");
+        expect(res.body).to.all.keys("id", "topic", "name", "url", "detail", "done", "createdAt", "updatedAt");
     
       });
     });
-  });
-  
- 
-  describe("Backend Delete Todo", () => {
+
     it("deletes a todo", () => {
       const url = Cypress.env("BACKEND_URL");
   
@@ -77,5 +67,35 @@ describe("Backend Environment", () => {
         });
       });
     });
+
+    it("done", () => {
+      const url = Cypress.env("BACKEND_URL");
+  
+      cy.request({
+        method: "POST",
+        url: `${url}/todos`,
+        body: {
+          topic: "Done Test Topic",
+          name: "Jane Doe",
+          url: "https://example.com/done.png",
+          detail: "done",
+          done: false
+        },
+      }).then((res) => {
+        const todo = res.body;
+  
+        cy.request({
+          method: "PUT",
+          url: `${url}/todos/${todo.id}`,
+          body: {
+            ...todo,
+            done: true
+          }
+        }).then((res) => {
+          expect(res.body).to.have.property("done", true);
+        });
+      });
+    });
+
   });
   

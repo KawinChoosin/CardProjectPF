@@ -154,14 +154,14 @@ function App() {
             <Button onClick={handleSubmit} data-cy='submit' variant="contained" color="success" sx={{ padding: '16px 32px', fontSize: '1rem', minWidth: '150px' }} disabled={!isFormValid()}>
               Submit
             </Button>
-            <Button onClick={handleReset} variant="outlined" color="error" sx={{ padding: '16px 32px', fontSize: '1rem', minWidth: '150px' }}>
+            <Button onClick={handleReset} data-cy='reset' variant="outlined" color="error" sx={{ padding: '16px 32px', fontSize: '1rem', minWidth: '150px' }}>
               Reset
             </Button>
           </Grid>
         </Grid>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
+      <Box data-cy='all-card' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
         <Grid container spacing={2}>
           {todos.map((todo, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
@@ -171,11 +171,11 @@ function App() {
                   image={todo.url}
                   title={todo.topic}
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                <CardContent data-cy='card-container'>
+                  <Typography data-cy='card-topic-name' gutterBottom variant="h5" component="div">
                     {todo.topic} of {todo.name}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-wrap', display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: expanded[todo.id] ? 'none' : MAX_DISPLAY_LINES, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <Typography data-cy='card-detail' variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-wrap', display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: expanded[todo.id] ? 'none' : MAX_DISPLAY_LINES, overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {todo.detail}
                   </Typography>
                 </CardContent>
@@ -183,8 +183,8 @@ function App() {
                   <Button size="small" onClick={() => handleExpandClick(todo.id)}>
                     {expanded[todo.id] ? 'Show Less' : 'Show More'}
                   </Button>
-                  <Button size="small" onClick={() => handleDone(todo.id)}>{todo.done ? 'Undo' : 'Done'}</Button>
-                  <Button size="small" onClick={() => handleDelete(todo.id)}>Delete</Button>
+                  <Button data-cy='done' size="small" onClick={() => handleDone(todo.id)}>{todo.done ? 'Undo' : 'Done'}</Button>
+                  <Button data-cy='delete' size="small" onClick={() => handleDelete(todo.id)}>Delete</Button>
                 </CardActions>
               </Card>
             </Grid>
