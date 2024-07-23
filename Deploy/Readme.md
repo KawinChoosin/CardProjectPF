@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 step to setup 
  docker-compose up -d --build    
 set up database 
@@ -21,3 +22,12 @@ set up database
      GRANT ALL PRIVILEGES ON card_todo_db.* TO 'appuser'@'%';
      FLUSH PRIVILEGES;
      
+=======
+step to setup
+docker-compose up -d --build  
+set up database
+docker exec -it card_todo_db mysql -u root -p
+CREATE USER 'appuser'@'%' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON card_todo_db.\* TO 'appuser'@'%';
+FLUSH PRIVILEGES;
+>>>>>>> f0a563b77b680426916282ac24cf064bb680af5f

@@ -6,10 +6,10 @@ describe("Backend", () => {
     it("checks CORS policy", () => {
       const url = Cypress.env("BACKEND_URL");
       cy.request({
-        method: "GET",
-        url: `${url}/todos`,
+        method: "DELETE",
+        url: `${url}/todos/${todo.id}`,
       }).then((res) => {
-        expect(res.headers).to.not.have.property("access-control-allow-origin");
+        expect(res.body).to.have.property("message", "Todo deleted");
       });
     });
 

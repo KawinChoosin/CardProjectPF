@@ -8,10 +8,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "cypress": "^13.13.1",
     "dotenv": "^16.4.5",
     "typescript": "^5.5.4"
+<<<<<<< HEAD
   }
+=======
+  },
+  "description": ""
+>>>>>>> f0a563b77b680426916282ac24cf064bb680af5f
 }
