@@ -59,6 +59,26 @@ describe("Backend Create Todo", () => {
   });
 });
 
+describe("Backend Put Todo", () => {
+  it("put a todo", () => {
+    const url = Cypress.env("BACKEND_URL");
+    cy.request({
+      method: "PUT",
+      url: `${url}/todos/1`,
+      body: {
+        topic: "Put Test Topic",
+        name: "Mark Doe",
+        url: "https://example.com/delete.png",
+        detail: "Description to be deleted",
+        done: false,
+      },
+    }).then((res) => {
+      const todo = res.body;
+      expect(res.body).to.have.property("message", "Todo deleted");
+    });
+  });
+});
+
 describe("Backend Delete Todo", () => {
   it("deletes a todo", () => {
     const url = Cypress.env("BACKEND_URL");
@@ -80,7 +100,7 @@ describe("Backend Delete Todo", () => {
         method: "DELETE",
         url: `${url}/todos/${todo.id}`,
       }).then((res) => {
-        expect(res.body).to.have.property("message", "Todo deleted");
+        expect(res.body).to.have.property("8 ", "Todo deleted");
       });
     });
   });
