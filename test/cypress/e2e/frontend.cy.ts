@@ -45,7 +45,11 @@ describe("Frontend", () => {
     //   // cy.get("[data-cy='submit']").click();
     //   // cy.wait(2000);
     cy.get("[data-cy='delete']").first().click();
+<<<<<<< HEAD
     cy.contains(`${topic}of${name}`).should("not.exist");
+=======
+    cy.contains(`${topic} of ${name}`).should("not.exist");
+>>>>>>> d76bb06705d2d8f99e05a35a5754075c7a792fa6
   });
 
   it("resets form", () => {
@@ -60,4 +64,8 @@ describe("Frontend", () => {
     cy.get("[data-cy='input-link']").should("have.value", "");
     cy.get("[data-cy='input-detail']").should("have.value", "");
   });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> d76bb06705d2d8f99e05a35a5754075c7a792fa6
