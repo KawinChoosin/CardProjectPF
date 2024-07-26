@@ -1,6 +1,13 @@
 step to setup
 docker-compose up -d --build  
-set up database
+set up database 
+
+docker exec -it card_todo_db mysql -u root -p
+CREATE USER 'appuser'@'%' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON card_todo_db.* TO 'appuser'@'%';
+FLUSH PRIVILEGES;
+
+
 CREATE DATABASE IF NOT EXISTS card_todo_db;
 
      USE card_todo_db;
@@ -16,8 +23,4 @@ CREATE DATABASE IF NOT EXISTS card_todo_db;
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
      );
 
-     docker exec -it card_todo_db mysql -u root -p
-     CREATE USER 'appuser'@'%' IDENTIFIED BY '1234';
-     GRANT ALL PRIVILEGES ON card_todo_db.* TO 'appuser'@'%';
-     FLUSH PRIVILEGES;
-
+    

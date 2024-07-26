@@ -18,7 +18,7 @@ services:
       - g11_card_todo_net
 
   backend:
-    image: kawin2526/card_backend:0.2
+    image: kawin2526/card_backend:latest
     container_name: card_todo_backend
     ports:
       - "${BACKEND_PORT}:2222"
@@ -35,7 +35,7 @@ services:
   frontend:
     depends_on:
       - backend
-    image: kawin2526/card_frontend:0.2
+    image: kawin2526/card_frontend:latest
     container_name: card_todo_frontend
     ports:
       - "${FRONTEND_PORT}:3333"
