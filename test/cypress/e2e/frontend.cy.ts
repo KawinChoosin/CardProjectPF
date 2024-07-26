@@ -1,126 +1,70 @@
-describe("Frontend", () => {
-
-    it("connect", () => {
-        const url = Cypress.env("FRONTEND_URL");
-        cy.visit(url);
+before(() => {
+    const url = Cypress.env("BACKEND_URL");
+    cy.request('POST', `${url}/todos`, {
+      topic: "Initial Topic",
+      name: "Initial Name",
+      url: "https://cdn.pixabay.com/photo/2017/09/03/00/44/png-2709031_640.png",
+      detail: "Initial Detail",
+      done: false
     });
-
-    it("delete card", () => {
-        const url = Cypress.env("FRONTEND_URL");
-        const topic = "Test Topic";
-        const name = "John Doe";
-        const imageUrl = "https://cdn.pixabay.com/photo/2017/09/03/00/44/png-2709031_640.png";
-        const detail = "This is a detailed description";
-
-        cy.visit(url);
-
-        cy.get("[data-cy='input-topic']").should("be.visible").type(topic);
-        cy.get("[data-cy='input-name']").should("be.visible").type(name);
-        cy.get("[data-cy='input-link']").should("be.visible").type(imageUrl);
-        cy.get("[data-cy='input-detail']").should("be.visible").type(detail);
-
-        cy.get("[data-cy='submit']").should("be.visible").click();
-
-        cy.wait(2000);
-
-        cy.get("[data-cy='delete']").first().should("be.visible").click();
-        
-        cy.contains(topic).should("not.exist");
-        cy.contains(name).should("not.exist");
-        cy.contains(detail).should("not.exist");
+  });
+  
+  describe("Frontend", () => {
+    const url = Cypress.env("FRONTEND_URL");
+    const topic = "Test Topic";
+    const name = "John Doe";
+    const imageUrl = "https://cdn.pixabay.com/photo/2017/09/03/00/44/png-2709031_640.png";
+    const detail = "This is a detailed description";
+  
+    it("connects", () => {
+      cy.visit(url);
     });
-
-    it("submit", () => {
-        const url = Cypress.env("FRONTEND_URL");
-        const topic = "Test Topic";
-        const name = "John Doe";
-        const imageUrl = "https://cdn.pixabay.com/photo/2017/09/03/00/44/png-2709031_640.png";
-        const detail = "This is a detailed description";
-
-        cy.visit(url);
-
-        cy.get("[data-cy='input-topic']")
-        .should("be.visible")
-        .type(topic);
-        cy.get("[data-cy='input-name']")
-        .should("be.visible")
-        .type(name);
-        cy.get("[data-cy='input-link']")
-        .should("be.visible")
-        .type(imageUrl);
-        cy.get("[data-cy='input-detail']")
-        .should("be.visible")
-        .type(detail);
-
-        cy.get("[data-cy='submit']")
-        .should("be.visible")
-        .click();
-
-        cy.wait(2000);
-
-        cy.get("[data-cy='card-container']")
-            .first()
-            .should('contain.text', `${topic} of ${name}`)
-            .and('contain.text', detail);
-
+  
+    it("creates todo", () => {
+      cy.visit(url);
+      cy.get("[data-cy='input-topic']").type(topic);
+      cy.get("[data-cy='input-name']").type(name);
+      cy.get("[data-cy='input-link']").type(imageUrl);
+      cy.get("[data-cy='input-detail']").type(detail);
+      cy.get("[data-cy='submit']").click();
+      cy.contains(`${topic} of ${name}`);
     });
-
-    it("reset", () => {
-        const url = Cypress.env("FRONTEND_URL");
-        const topic = "Test Topic";
-        const name = "John Doe";
-        const imageUrl = "https://cdn.pixabay.com/photo/2017/09/03/00/44/png-2709031_640.png";
-        const detail = "This is a detailed description";
-
-        cy.visit(url);
-
-        cy.get("[data-cy='input-topic']")
-        .should("be.visible")
-        .type(topic);
-        cy.get("[data-cy='input-name']")
-        .should("be.visible")
-        .type(name);
-        cy.get("[data-cy='input-link']")
-        .should("be.visible")
-        .type(imageUrl);
-        cy.get("[data-cy='input-detail']")
-        .should("be.visible")
-        .type(detail);
-
-        cy.get("[data-cy='reset']")
-        .should("be.visible")
-        .click();
-
-        cy.wait(2000);
-
-        cy.get("[data-cy='input-topic']").should("not.contain", topic);
-        cy.get("[data-cy='input-name']").should("not.contain", name);
-        cy.get("[data-cy='input-detail']").should("not.contain", detail);
+  
+    it("deletes todo", () => {
+      cy.visit(url);
+      cy.get("[data-cy='input-topic']").type(topic);
+      cy.get("[data-cy='input-name']").type(name);
+      cy.get("[data-cy='input-link']").type(imageUrl);
+      cy.get("[data-cy='input-detail']").type(detail);
+      cy.get("[data-cy='submit']").click();
+      cy.wait(2000);
+      cy.get("[data-cy='delete']").first().click();
+      cy.contains(`${topic} of ${name}`).should("not.exist");
     });
-
-    it("done", () => {
-        const url = Cypress.env("FRONTEND_URL");
-        const topic = "Test Topic";
-        const name = "John Doe";
-        const imageUrl = "https://cdn.pixabay.com/photo/2017/09/03/00/44/png-2709031_640.png";
-        const detail = "This is a detailed description";
-
-        cy.visit(url);
-
-        cy.get("[data-cy='input-topic']").should("be.visible").type(topic);
-        cy.get("[data-cy='input-name']").should("be.visible").type(name);
-        cy.get("[data-cy='input-link']").should("be.visible").type(imageUrl);
-        cy.get("[data-cy='input-detail']").should("be.visible").type(detail);
-
-        cy.get("[data-cy='submit']").should("be.visible").click();
-
-        cy.wait(2000);
-
-        cy.get("[data-cy='done']").first().should("be.visible").click();
-        
-        cy.contains(topic);
-        cy.contains(name);
-        cy.contains(detail);
+  
+    it("marks todo as done", () => {
+      cy.visit(url);
+      cy.get("[data-cy='input-topic']").type(topic);
+      cy.get("[data-cy='input-name']").type(name);
+      cy.get("[data-cy='input-link']").type(imageUrl);
+      cy.get("[data-cy='input-detail']").type(detail);
+      cy.get("[data-cy='submit']").click();
+      cy.wait(2000);
+      cy.get("[data-cy='done']").first().click();
+      cy.get("[data-cy='card-container']").first().should('have.css', 'opacity', '0.5');
     });
-
-})
+  
+    it("resets form", () => {
+      cy.visit(url);
+      cy.get("[data-cy='input-topic']").type(topic);
+      cy.get("[data-cy='input-name']").type(name);
+      cy.get("[data-cy='input-link']").type(imageUrl);
+      cy.get("[data-cy='input-detail']").type(detail);
+      cy.get("[data-cy='reset']").click();
+      cy.get("[data-cy='input-topic']").should("have.value", "");
+      cy.get("[data-cy='input-name']").should("have.value", "");
+      cy.get("[data-cy='input-link']").should("have.value", "");
+      cy.get("[data-cy='input-detail']").should("have.value", "");
+    });
+  });
+  
